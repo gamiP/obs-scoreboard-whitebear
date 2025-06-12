@@ -1,0 +1,137 @@
+.display-panel {
+  padding: 20px;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  backdrop-filter: blur(5px);
+}
+
+.display-section {
+  margin-bottom: 20px;
+}
+
+.display-section h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5em;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.stat-label {
+  font-size: 1.2em;
+  color: #ccc;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 2em;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-value {
+    font-size: 1.5em;
+  }
+}
+
+.display-table {
+  border-collapse: collapse;
+  font-size: 2.6em;
+  font-weight: 900;
+  font-family: "Futura Bold", "Helvetica Black", "Arial Black", "Noto Sans JP Black", "ヒラギノ角ゴ StdN W8", sans-serif;
+  color: #000;
+  text-align: center;
+  width: auto;
+}
+
+.display-table th, .display-table td {
+  padding: 0.1em 0.2em;  /* パディングを大幅に縮小 */
+  border: none;
+  font-weight: 900;
+  white-space: nowrap;
+  line-height: 1.2;  /* 行間を縮める */
+}
+
+.display-table th {
+  font-size: 1em;  /* ヘッダーのサイズを調整 */
+}
+
+.display-table td {
+  font-size: 1.1em;  /* セルのサイズを調整 */
+}
+
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+  .display-table {
+    font-size: 1.4em;  /* モバイル表示時のサイズを調整 */
+  }
+  .display-table th, .display-table td {
+    padding: 0.1em 0.2em;  /* さらにパディングを縮小 */
+  }
+}
+
+/* テーマごとの色設定 */
+.theme-black, .theme-black *:not(.display-chromakey-bg) {
+  color: #000 !important;
+  text-shadow: 
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff !important;   /*縁取りを細く */
+  font-weight: 900 !important;
+}
+
+.theme-white, .theme-white *:not(.display-chromakey-bg) {
+  color: #fff !important;
+  text-shadow: 
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000 !important;   /*縁取りを細く */
+  font-weight: 900 !important;
+}
+
+.display-chromakey-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+  -webkit-app-region: drag;
+}
+
+/* 試合数と勝率の列を中央寄せ */
+.display-table td:nth-child(2),
+.display-table td:nth-child(4) {
+  text-align: center !important;
+} 
