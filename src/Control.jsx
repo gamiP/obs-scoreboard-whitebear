@@ -12,12 +12,14 @@ export default function Control() {
   const [gameData, setGameData] = useState(initialGameData);
   const [theme, setTheme] = useState('black');
   const [showBackground, setShowBackground] = useState(false);
+  const [history, setHistory] = useState([initialGameData]); // 履歴を初期状態で初期化
 
   // localStorageから復元
   useEffect(() => {
     const savedGameData = localStorage.getItem(GAME_DATA_KEY);
     if (savedGameData) {
       setGameData(JSON.parse(savedGameData));
+      setHistory([JSON.parse(savedGameData)]); // 履歴も初期化
       if (window.electronAPI && window.electronAPI.sendGameData) {
         window.electronAPI.sendGameData(JSON.parse(savedGameData));
       }
@@ -43,6 +45,7 @@ export default function Control() {
     if (window.electronAPI && window.electronAPI.onGameDataUpdate) {
       window.electronAPI.onGameDataUpdate((newGameData) => {
         setGameData(newGameData);
+        setHistory((prev) => [...prev, newGameData]); // 外部から更新された場合も履歴に追加
       });
     }
     if (window.electronAPI && window.electronAPI.onThemeChanged) {
@@ -81,8 +84,8 @@ export default function Control() {
     if (!canAddResult) return;
     // 3桁制限
     if ((isWin && gameData.matchResults.wins >= MAX_DIGIT) || (!isWin && gameData.matchResults.losses >= MAX_DIGIT)) return;
+    setHistory((prev) => [...prev, gameData]); // 履歴に現在の状態を追加
     window.electronAPI.updateMatchResult(isWin);
-    // 保存
     const newGameData = {
       ...gameData,
       matchResults: {
@@ -91,6 +94,7 @@ export default function Control() {
         losses: !isWin ? Math.min(gameData.matchResults.losses + 1, MAX_DIGIT) : gameData.matchResults.losses,
       },
     };
+    setGameData(newGameData);
     saveGameData(newGameData);
   };
 
@@ -98,8 +102,8 @@ export default function Control() {
   const updateTurnResult = (isFirst) => {
     // 3桁制限
     if ((isFirst && gameData.turnResults.first >= MAX_DIGIT) || (!isFirst && gameData.turnResults.second >= MAX_DIGIT)) return;
+    setHistory((prev) => [...prev, gameData]); // 履歴に現在の状態を追加
     window.electronAPI.updateTurnResult(isFirst);
-    // 保存
     const newGameData = {
       ...gameData,
       turnResults: {
@@ -108,6 +112,7 @@ export default function Control() {
         second: !isFirst ? Math.min(gameData.turnResults.second + 1, MAX_DIGIT) : gameData.turnResults.second,
       },
     };
+    setGameData(newGameData);
     saveGameData(newGameData);
   };
 
@@ -129,9 +134,20 @@ export default function Control() {
 
   // リセットボタン
   const resetData = () => {
+    setHistory((prev) => [...prev, initialGameData]); // リセットも履歴に追加
     setGameData(initialGameData);
     window.electronAPI.sendGameData(initialGameData);
     saveGameData(initialGameData);
+  };
+
+  // 一つ戻るボタン
+  const handleUndo = () => {
+    if (history.length <= 1) return; // 最初の状態までしか戻れない
+    const prev = history[history.length - 2];
+    setGameData(prev);
+    setHistory(history.slice(0, -1));
+    window.electronAPI.sendGameData(prev);
+    saveGameData(prev);
   };
 
   return (
@@ -193,9 +209,14 @@ export default function Control() {
           </div>
         </div>
 
-        <button className="reset-button" onClick={resetData}>
-          リセット
-        </button>
+        <div className="button-group">
+          <button className="undo-button" onClick={handleUndo} disabled={history.length <= 1}>
+            一つ戻る
+          </button>
+          <button className="reset-button" onClick={resetData}>
+            リセット
+          </button>
+        </div>
       </div>
     </div>
   );

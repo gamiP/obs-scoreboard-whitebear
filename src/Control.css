@@ -119,9 +119,25 @@ html, body, #root {
 
 .reset-button {
   width: 100%;
-  max-width: 260px;
-  padding: 8px 0;
-  background: #e83010;
+  max-width: 130px;
+  padding: 12px 0;
+  background: #e83010 !important;
+  color: #fff !important;
+  font-size: 1.4em;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  margin: 8px 0 4px 0;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: background 0.2s;
+}
+
+.undo-button {
+  width: 100%;
+  max-width: 130px;
+  padding: 12px 0;
+  background: #3099d2 !important;
   color: #fff;
   font-size: 1.4em;
   font-weight: bold;
@@ -133,8 +149,14 @@ html, body, #root {
   transition: background 0.2s;
 }
 
+.undo-button:disabled {
+  background: #bbb !important;
+  color: #fff;
+  cursor: not-allowed;
+}
+
 .reset-button:hover {
-  background: #c00;
+  background: rgb(168, 111, 111);
 }
 
 .background-toggle {
