@@ -75,7 +75,7 @@ OBSでの遊戯王マスターデュエル配信をもっとわかりやすく�
 ---
 ## 📝 ライセンス / License
 
-MIT License
+MIT License – see the [LICENSE](./LICENSE) file for details.
 
 ---
 
