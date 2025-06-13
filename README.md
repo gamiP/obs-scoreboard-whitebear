@@ -7,7 +7,7 @@ OBSでの遊戯王マスターデュエル配信をもっとわかりやすく�
 ## 📦 ダウンロード / Download
 
 👉 最新リリースはこちら  
-➡ [リリースページを見る]([https://github.com/gamiP/obs-scoreboard-whitebear/releases/latest]
+➡ [リリースページを見る](https://github.com/gamiP/obs-scoreboard-whitebear/releases/latest)
 
 ---
 
