@@ -3,6 +3,7 @@
     "title": "Control Panel",
     "turnTitle": "Turn Order",
     "matchTitle": "Match Results",
+    "coinTitle": "Coin",
     "first": "First",
     "second": "Second",
     "win": "Win",
@@ -11,7 +12,9 @@
     "winRate": "Win Rate",
     "undo": "Undo",
     "reset": "Reset",
-    "background": "Show Background"
+    "background": "Show Background",
+    "coinHeads": "Heads",
+    "coinTails": "Tails"
   },
   "display": {
     "first": "First",

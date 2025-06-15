@@ -16,6 +16,10 @@ const initialGameData = {
     losses: 0,
     total: 0,
     winRate: 0
+  },
+  coinResults: {
+    heads: 0,
+    tails: 0
   }
 };
 
@@ -39,6 +43,10 @@ const ControlContent = () => {
     const savedData = localStorage.getItem(GAME_DATA_KEY);
     if (savedData) {
       const parsedData = JSON.parse(savedData);
+      // coinResultsがなければ初期値を補完
+      if (!parsedData.coinResults) {
+        parsedData.coinResults = { heads: 0, tails: 0 };
+      }
       setGameData(parsedData);
       setHistory([parsedData]);
     }
@@ -98,6 +106,19 @@ const ControlContent = () => {
     setCanAddResult(false);
   };
 
+  const updateCoinResult = (isHeads) => {
+    const newGameData = { ...gameData };
+    if (isHeads) {
+      newGameData.coinResults.heads = Math.min((newGameData.coinResults.heads || 0) + 1, MAX_DIGIT);
+    } else {
+      newGameData.coinResults.tails = Math.min((newGameData.coinResults.tails || 0) + 1, MAX_DIGIT);
+    }
+    setGameData(newGameData);
+    setHistory([...history, newGameData]);
+    localStorage.setItem(GAME_DATA_KEY, JSON.stringify(newGameData));
+    ipcRenderer.send('update-game-data', newGameData);
+  };
+
   const handleUndo = () => {
     if (history.length <= 1) return;
     const newHistory = history.slice(0, -1);
@@ -132,6 +153,18 @@ const ControlContent = () => {
               />
               <span>{dict.background}</span>
             </label>
+          </div>
+        </div>
+
+        <div className="control-section">
+          <h3>コイン</h3>
+          <div className="button-group">
+            <button onClick={() => updateCoinResult(true)}>{dict.coinHeads}</button>
+            <button onClick={() => updateCoinResult(false)}>{dict.coinTails}</button>
+          </div>
+          <div className="stats">
+            <p>{dict.coinHeads}: {gameData.coinResults?.heads ?? 0}</p>
+            <p>{dict.coinTails}: {gameData.coinResults?.tails ?? 0}</p>
           </div>
         </div>
 

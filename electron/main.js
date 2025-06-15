@@ -95,14 +95,14 @@ function createMenu() {
 var VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
 function createWindow() {
     // コントロール画面の生成
-    // width: 400, height: 600
+    // width: 400, height: 800
     mainWindow = new electron_1.BrowserWindow({
         width: 400,
-        height: 600,
+        height: 800,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            devTools: false
+            devTools: true
         }
     });
     if (VITE_DEV_SERVER_URL) {
@@ -111,17 +111,17 @@ function createWindow() {
     else {
         mainWindow.loadFile('dist/index.html');
     }
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
     // ディスプレイウィンドウの生成
     // width: 700, height: 400
     displayWindow = new electron_1.BrowserWindow({
         width: 700,
-        height: 400,
+        height: 300,
         frame: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            devTools: false
+            devTools: true
         }
     });
     if (VITE_DEV_SERVER_URL) {
@@ -130,7 +130,7 @@ function createWindow() {
     else {
         displayWindow.loadFile('dist/index.html', { hash: 'display' });
     }
-    // displayWindow.webContents.openDevTools();
+    displayWindow.webContents.openDevTools();
     // コントロール画面を閉じたらディスプレイ画面も閉じる
     mainWindow.on('closed', function () {
         if (displayWindow && !displayWindow.isDestroyed()) {

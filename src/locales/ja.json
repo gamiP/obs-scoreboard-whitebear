@@ -3,6 +3,7 @@
     "title": "操作パネル",
     "turnTitle": "先攻後攻",
     "matchTitle": "試合結果",
+    "coinTitle": "試合結果",
     "first": "先攻",
     "second": "後攻",
     "win": "勝ち",
@@ -11,7 +12,9 @@
     "winRate": "勝率",
     "undo": "一つ戻る",
     "reset": "リセット",
-    "background": "背景を表示"
+    "background": "背景を表示",
+    "coinHeads": "表",
+    "coinTails": "裏"
   },
   "display": {
     "first": "先攻",
