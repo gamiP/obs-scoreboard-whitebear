@@ -7,7 +7,7 @@ OBSでの遊戯王マスターデュエル配信をもっとわかりやすく�
 ## 📦 ダウンロード / Download
 
 👉 最新リリースはこちら  
-➡ [リリースページを見る]([https://github.com/gamiP/obs-scoreboard-whitebear/releases/latest]
+➡ [リリースページを見る](https://github.com/gamiP/obs-scoreboard-whitebear/releases/latest)
 
 ---
 
@@ -33,7 +33,8 @@ OBSでの遊戯王マスターデュエル配信をもっとわかりやすく�
 3. OBS内で自由に位置やサイズを調整
 
 ### 🎛️ 操作パネルの使い方
-![812afeceec4a6918](https://github.com/user-attachments/assets/51cd0ab4-9904-476f-8c23-3a64dcd3f72e)
+![5f4bd1b6d34b459d](https://github.com/user-attachments/assets/e3d8a6a5-f8ee-43ac-be15-2891080418e2)
+
 - 別ウィンドウとして表示される操作パネルで以下の操作が可能：
   - `白/黒切り替え` ボタンで文字色を変更
   - `背景色切り替え` または `クロマキー背景` を選択
@@ -41,16 +42,19 @@ OBSでの遊戯王マスターデュエル配信をもっとわかりやすく�
   - `勝ち` / `負け` の入力  
     → 自動で試合数と勝率が更新されます
   - リセットボタン
+    → 全ての情報がリセットされます。（戻るボタンで戻せます）
+  - 一つ戻るボタン
+    → 一つ前の操作を戻します。起動時の情報が初期値として操作を一つずつ戻せます。
 
 ---
 
 ## 💡 今後の予定 / Coming Soon
 
 - UIテーマのカスタマイズ（色、フォント）
-- 戻るボタン
-- 英語対応
+- 多言語対応
 - 対戦ログ保存機能
 - macOS対応
+- レイアウト変更（選択）
 
 ---
 
