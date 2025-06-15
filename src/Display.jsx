@@ -1,52 +1,91 @@
 import { useEffect, useState } from 'react';
-import { initialGameData } from './types/gameData.js';
+import { ipcRenderer } from 'electron';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { themes } from './themes.js';
 import './Display.css';
 
-export default function Display() {
+const initialGameData = {
+  turnResults: {
+    first: 0,
+    second: 0
+  },
+  matchResults: {
+    wins: 0,
+    losses: 0,
+    total: 0,
+    winRate: 0
+  }
+};
+
+const DisplayContent = () => {
+  const { dict, changeLang } = useLanguage();
   const [gameData, setGameData] = useState(initialGameData);
   const [theme, setTheme] = useState('black');
-  const [showBackground, setShowBackground] = useState(false);
+  const [showBackground, setShowBackground] = useState(true);
 
+  // テーマの変更を監視
   useEffect(() => {
-    if (window.electronAPI && window.electronAPI.onGameDataUpdate) {
-      window.electronAPI.onGameDataUpdate((newGameData) => {
-        setGameData(newGameData);
-      });
-    }
-    if (window.electronAPI && window.electronAPI.onThemeChanged) {
-      window.electronAPI.onThemeChanged((themeName) => {
-        setTheme(themeName);
-      });
-    }
-    if (window.electronAPI && window.electronAPI.onBackgroundChanged) {
-      window.electronAPI.onBackgroundChanged((show) => {
-        setShowBackground(show);
-      });
-    }
-  }, []);
-
-  // 勝率計算（0割防止）
-  const calcRate = (num, total) => total === 0 ? 0 : Math.round((num / total) * 100);
-
-  // 背景色の決定
-  const getBackgroundStyle = () => {
-    console.log('Current background state:', showBackground, 'Theme:', theme);
-    const color = !showBackground ? '#00ff00' : (theme === 'black' ? '#ffffff' : '#000000');
-    return {
-      backgroundColor: color,
-      background: color
+    const handleThemeChange = (newTheme) => {
+      console.log('Theme change received:', newTheme);
+      console.log('Available themes:', themes);
+      console.log('Selected theme config:', themes[newTheme]);
+      setTheme(newTheme);
     };
+
+    ipcRenderer.on('change-theme', (_, newTheme) => handleThemeChange(newTheme));
+
+    // 背景表示の変更を監視
+    ipcRenderer.on('background-change', (_, show) => {
+      console.log('Background change:', show);
+      setShowBackground(show);
+    });
+
+    // ゲームデータの更新を監視
+    ipcRenderer.on('update-game-data', (_, newData) => {
+      setGameData(newData);
+    });
+
+    // 言語の変更を監視
+    ipcRenderer.on('change-language', (_, { type, lang }) => {
+      if (type === 'display') {
+        changeLang(lang);
+      }
+    });
+
+    // 保存されたデータを復元
+    const savedData = localStorage.getItem('gameData');
+    if (savedData) {
+      setGameData(JSON.parse(savedData));
+    }
+
+    return () => {
+      ipcRenderer.removeAllListeners('change-theme');
+      ipcRenderer.removeAllListeners('background-change');
+      ipcRenderer.removeAllListeners('update-game-data');
+      ipcRenderer.removeAllListeners('change-language');
+    };
+  }, [changeLang]);
+
+  const calcRate = (value, total) => {
+    if (total === 0) return 0;
+    return Math.round((value / total) * 100);
   };
 
-  const backgroundStyle = getBackgroundStyle();
-  console.log('Applied background style:', backgroundStyle);
+  // 現在のテーマの設定を取得
+  const currentTheme = themes[theme];
+  console.log('Current theme state:', {
+    theme,
+    currentTheme,
+    showBackground,
+    backgroundColor: showBackground ? currentTheme.background : '#00ff00',
+    textColor: currentTheme.color
+  });
 
   return (
-    <div 
-      className={`display-chromakey-bg ${themes[theme].className}`}
+    <div
+      className={`display-chromakey-bg ${currentTheme.className}`}
       style={{
-        ...backgroundStyle,
+        backgroundColor: showBackground ? currentTheme.background : '#00ff00',
         position: 'fixed',
         top: 0,
         left: 0,
@@ -59,32 +98,46 @@ export default function Display() {
         justifyContent: 'center'
       }}
     >
-      <table className="display-table">
+      <table 
+        className="display-table" 
+        style={{ 
+          color: currentTheme.color,
+          backgroundColor: 'transparent'
+        }}
+      >
         <tbody>
           <tr>
-            <th style={{writingMode: 'horizontal-tb'}}>先攻</th>
-            <td>{gameData.turnResults.first}</td>
-            <td>{calcRate(gameData.turnResults.first, gameData.matchResults.total)}%</td>
-            <th style={{writingMode: 'horizontal-tb'}}>勝ち</th>
-            <td>{gameData.matchResults.wins}</td>
-            <td>{calcRate(gameData.matchResults.wins, gameData.matchResults.total)}%</td>
+            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.first}</th>
+            <td style={{color: currentTheme.color}}>{gameData.turnResults.first}</td>
+            <td style={{color: currentTheme.color}}>{calcRate(gameData.turnResults.first, gameData.matchResults.total)}%</td>
+            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.win}</th>
+            <td style={{color: currentTheme.color}}>{gameData.matchResults.wins}</td>
+            <td style={{color: currentTheme.color}}>{calcRate(gameData.matchResults.wins, gameData.matchResults.total)}%</td>
           </tr>
           <tr>
-            <th style={{writingMode: 'horizontal-tb'}}>後攻</th>
-            <td>{gameData.turnResults.second}</td>
-            <td>{calcRate(gameData.turnResults.second, gameData.matchResults.total)}%</td>
-            <th style={{writingMode: 'horizontal-tb'}}>負け</th>
-            <td>{gameData.matchResults.losses}</td>
-            <td>{calcRate(gameData.matchResults.losses, gameData.matchResults.total)}%</td>
+            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.second}</th>
+            <td style={{color: currentTheme.color}}>{gameData.turnResults.second}</td>
+            <td style={{color: currentTheme.color}}>{calcRate(gameData.turnResults.second, gameData.matchResults.total)}%</td>
+            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.lose}</th>
+            <td style={{color: currentTheme.color}}>{gameData.matchResults.losses}</td>
+            <td style={{color: currentTheme.color}}>{calcRate(gameData.matchResults.losses, gameData.matchResults.total)}%</td>
           </tr>
           <tr>
-            <th style={{writingMode: 'horizontal-tb'}}>試合数</th>
-            <td>{gameData.matchResults.total}</td>
-            <th style={{writingMode: 'horizontal-tb'}}>勝率</th>
-            <td>{gameData.matchResults.winRate}%</td>
+            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.games}</th>
+            <td style={{color: currentTheme.color}}>{gameData.matchResults.total}</td>
+            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.winRate}</th>
+            <td style={{color: currentTheme.color}}>{gameData.matchResults.winRate}%</td>
           </tr>
         </tbody>
       </table>
     </div>
   );
-}
+};
+
+const Display = () => (
+  <LanguageProvider type="display">
+    <DisplayContent />
+  </LanguageProvider>
+);
+
+export default Display;

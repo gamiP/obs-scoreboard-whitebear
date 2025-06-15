@@ -2,54 +2,52 @@
   "name": "electron-react-app",
   "private": true,
   "version": "1.1.0",
-  "type": "module",
-  "main": "electron/main.mjs",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "electron": "cross-env NODE_ENV=development electron .",
-    "build:electron": "npm run build && electron-builder --win --ia32",
-    "dev:all": "concurrently \"npm run dev\" \"npm run electron\""
+    "electron:dev": "cross-env NODE_ENV=development electron .",
+    "preelectron:build:win32": "npm run build && cp dist-electron/main.js electron/main.js",
+    "electron:build:win32": "electron-builder --win --ia32",
+    "dev:all": "npm run dev"
   },
   "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.0",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "@vitejs/plugin-react": "^4.4.1",
-    "concurrently": "^9.1.2",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.56",
+    "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
-    "electron": "^36.4.0",
-    "electron-builder": "^26.0.12",
-    "eslint": "^9.25.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^16.0.0",
-    "vite": "^6.3.5"
+    "electron": "^28.2.3",
+    "electron-builder": "^24.9.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.4",
+    "vite-plugin-electron": "^0.28.0",
+    "vite-plugin-electron-renderer": "^0.14.5"
   },
   "build": {
     "appId": "com.whitebear.boardmaster",
-    "productName": "白熊パネル",
+    "productName": "WhiteBearPanel",
     "directories": {
-      "output": "dist_electron"
+      "output": "dist-electron"
     },
     "files": [
-      "dist/**/*",
-      "electron/**/*",
-      "src/**/*",
-      "package.json"
-    ],
-    "extraResources": [
-      {
-        "from": "dist",
-        "to": "dist"
-      }
+      "dist/index.html",
+      "dist/assets/**/*",
+      "electron/main.js",
+      "electron/**/*"
     ],
     "win": {
       "target": [

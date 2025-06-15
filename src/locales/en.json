@@ -1,0 +1,24 @@
+{
+  "control": {
+    "title": "Control Panel",
+    "turnTitle": "Turn Order",
+    "matchTitle": "Match Results",
+    "first": "First",
+    "second": "Second",
+    "win": "Win",
+    "lose": "Lose",
+    "games": "Games",
+    "winRate": "Win Rate",
+    "undo": "Undo",
+    "reset": "Reset",
+    "background": "Show Background"
+  },
+  "display": {
+    "first": "First",
+    "second": "Second",
+    "win": "Win",
+    "lose": "Lose",
+    "games": "Games",
+    "winRate": "Win Rate"
+  }
+} 

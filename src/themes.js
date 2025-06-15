@@ -1,10 +1,14 @@
 export const themes = {
-  black: {
-    name: '黒文字',
-    className: 'theme-black',
-  },
   white: {
-    name: '白文字',
+    name: 'White Background',
     className: 'theme-white',
+    background: '#ffffff',
+    color: '#000000',
+  },
+  black: {
+    name: 'Black Background',
+    className: 'theme-black',
+    background: '#000000',
+    color: '#ffffff',
   },
 }; 

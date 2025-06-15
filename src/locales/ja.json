@@ -1,0 +1,24 @@
+{
+  "control": {
+    "title": "操作パネル",
+    "turnTitle": "先攻後攻",
+    "matchTitle": "試合結果",
+    "first": "先攻",
+    "second": "後攻",
+    "win": "勝ち",
+    "lose": "負け",
+    "games": "試合数",
+    "winRate": "勝率",
+    "undo": "一つ戻る",
+    "reset": "リセット",
+    "background": "背景を表示"
+  },
+  "display": {
+    "first": "先攻",
+    "second": "後攻",
+    "win": "勝ち",
+    "lose": "負け",
+    "games": "試合数",
+    "winRate": "勝率"
+  }
+} 

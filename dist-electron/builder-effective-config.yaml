@@ -1,0 +1,18 @@
+directories:
+  output: dist-electron
+  buildResources: build
+appId: com.whitebear.boardmaster
+productName: WhiteBearPanel
+files:
+  - filter:
+      - dist/index.html
+      - dist/assets/**/*
+      - electron/main.js
+      - electron/**/*
+win:
+  target:
+    - target: portable
+      arch:
+        - ia32
+  icon: assets/win/app.ico
+electronVersion: 28.3.3
