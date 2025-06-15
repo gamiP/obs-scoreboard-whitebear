@@ -11,7 +11,8 @@
     "electron:dev": "cross-env NODE_ENV=development electron .",
     "preelectron:build:win32": "npm run build && cp dist-electron/main.js electron/main.js",
     "electron:build:win32": "electron-builder --win --ia32",
-    "dev:all": "npm run dev"
+    "build:ts": "tsc --watch",
+    "dev:all": "concurrently \"npm:build:ts\" \"npm:dev\""
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -53,7 +54,9 @@
       "target": [
         {
           "target": "portable",
-          "arch": ["ia32"]
+          "arch": [
+            "ia32"
+          ]
         }
       ],
       "icon": "assets/win/app.ico"

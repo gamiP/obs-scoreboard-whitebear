@@ -105,7 +105,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true // ← これを追加
+      devTools: false
     }
   });
 
@@ -125,7 +125,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true // ← これを追加
+      devTools: false
     }
   });
 
