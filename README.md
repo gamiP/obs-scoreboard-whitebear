@@ -9,7 +9,7 @@ OBSでの遊戯王マスターデュエル配信をもっとわかりやすく�
 ## 📦 ダウンロード / Download
 
 👉 最新リリースはこちら  
-➡ [リリースページを見る](https://github.com/gamiP/obs-scoreboard-whitebear/releases/latest)
+➡ [DL](https://github.com/gamiP/obs-scoreboard-whitebear/releases/latest)
 
 ---
 
@@ -33,12 +33,13 @@ OBSでの遊戯王マスターデュエル配信をもっとわかりやすく�
 
 ### 🎥 OBSへの表示方法
 ![1](https://github.com/user-attachments/assets/11f5601a-5486-4fa8-9daa-0cfc6c515f19)
+
 1. アプリを起動
 2. **OBSの「ウィンドウキャプチャ」ソース**で「白熊パネル」を選択
 3. OBS内で自由に位置やサイズを調整
 
 ### 🎛️ 操作パネルの使い方
-![5f4bd1b6d34b459d](https://github.com/user-attachments/assets/e3d8a6a5-f8ee-43ac-be15-2891080418e2)
+![スクリーンショット 2025-06-17 042553](https://github.com/user-attachments/assets/0cfcc97c-7ebc-4836-ae55-106b0c2aa582)
 
 - 別ウィンドウとして表示される操作パネルで以下の操作が可能：
   - 日本語と英語表記の切り替え(メニューバー)
@@ -52,6 +53,31 @@ OBSでの遊戯王マスターデュエル配信をもっとわかりやすく�
     → 全ての情報がリセットされます。（戻るボタンで戻せます）
   - 一つ戻るボタン
     → 一つ前の操作を戻します。起動時の情報が初期値として操作を一つずつ戻せます。
+---
+
+### 📱 レイアウトの種類
+背景の非表示にしてグリーンバックでOBSへ表示するのがおすすめです。
+
+#### ワイドレイアウト
+
+![スクリーンショット 2025-06-16 232639](https://github.com/user-attachments/assets/77cde0f5-8c98-4d09-9e82-4e078c5b9475)
+
+#### ロングレイアウト
+
+![スクリーンショット 2025-06-16 232618](https://github.com/user-attachments/assets/aa08a75a-5e0f-4ab3-8c3b-d3d44853f302)
+
+#### コンパクトレイアウト
+  
+![スクリーンショット 2025-06-17 042633](https://github.com/user-attachments/assets/e1b7fa55-be3e-4ffd-b310-bbaf1c2f5c3c)
+
+---
+
+### 🇺🇸 英語表記
+コントロールパネルやOBSに表記するそれぞれのウィンドウズ毎に英語表記へ変更できます。
+
+![スクリーンショット 2025-06-17 042529](https://github.com/user-attachments/assets/4eb0aa43-bad2-489e-9730-1fc27d061add)
+
+![スクリーンショット 2025-06-17 042848](https://github.com/user-attachments/assets/3ab95432-0934-4482-9da9-9c544ecd9a89)
 
 ---
 
