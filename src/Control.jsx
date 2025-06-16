@@ -31,6 +31,7 @@ const ControlContent = () => {
   const [theme, setTheme] = useState('black');
   const [showBackground, setShowBackground] = useState(true);
   const [history, setHistory] = useState([initialGameData]);
+  const [layout, setLayout] = useState('standard');
 
   const totalGames = (gameData.turnResults.first || 0) + (gameData.turnResults.second || 0);
   const matchInputCount = (gameData.matchResults.wins || 0) + (gameData.matchResults.losses || 0);
@@ -69,6 +70,15 @@ const ControlContent = () => {
       ipcRenderer.removeAllListeners('change-language');
     };
   }, [changeLang]);
+
+  useEffect(() => {
+    ipcRenderer.on('change-layout', (_, newLayout) => {
+      setLayout(newLayout);
+    });
+    return () => {
+      ipcRenderer.removeAllListeners('change-layout');
+    };
+  }, []);
 
   const handleBackgroundChange = (event) => {
     const newShowBackground = event.target.checked;
@@ -139,6 +149,7 @@ const ControlContent = () => {
   return (
     <div className="control-panel-wrapper">
       <div className="control-panel">
+        <div style={{ fontSize: '1.1em', color: '#888', marginBottom: 4 }}>Layout: {layout}</div>
         <h2>{dict.title}</h2>
 
         <div className="control-section">

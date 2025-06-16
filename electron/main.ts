@@ -88,6 +88,32 @@ function createMenu() {
           }
         }
       ]
+    },
+    {
+      label: 'Layout',
+      submenu: [
+        {
+          label: '標準レイアウト',
+          click: () => {
+            mainWindow?.webContents.send('change-layout', 'standard');
+            displayWindow?.webContents.send('change-layout', 'standard');
+          }
+        },
+        {
+          label: 'ワイドレイアウト',
+          click: () => {
+            mainWindow?.webContents.send('change-layout', 'wide');
+            displayWindow?.webContents.send('change-layout', 'wide');
+          }
+        },
+        {
+          label: 'コンパクトレイアウト',
+          click: () => {
+            mainWindow?.webContents.send('change-layout', 'compact');
+            displayWindow?.webContents.send('change-layout', 'compact');
+          }
+        }
+      ]
     }
   ];
   const menu = Menu.buildFromTemplate(template);

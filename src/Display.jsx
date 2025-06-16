@@ -3,6 +3,9 @@ import { ipcRenderer } from 'electron';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { themes } from './themes.js';
 import './Display.css';
+import DisplayStandardLayout from './components/layouts/DisplayStandardLayout';
+import DisplayWideLayout from './components/layouts/DisplayWideLayout';
+import DisplayCompactLayout from './components/layouts/DisplayCompactLayout';
 
 const initialGameData = {
   turnResults: {
@@ -22,6 +25,7 @@ const DisplayContent = () => {
   const [gameData, setGameData] = useState(initialGameData);
   const [theme, setTheme] = useState('black');
   const [showBackground, setShowBackground] = useState(true);
+  const [layout, setLayout] = useState('standard');
 
   // テーマの変更を監視
   useEffect(() => {
@@ -66,6 +70,15 @@ const DisplayContent = () => {
     };
   }, [changeLang]);
 
+  useEffect(() => {
+    ipcRenderer.on('change-layout', (_, newLayout) => {
+      setLayout(newLayout);
+    });
+    return () => {
+      ipcRenderer.removeAllListeners('change-layout');
+    };
+  }, []);
+
   const calcRate = (value, total) => {
     if (total === 0) return 0;
     return Math.round((value / total) * 100);
@@ -95,41 +108,38 @@ const DisplayContent = () => {
         height: '100vh',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flexDirection: 'column'
       }}
     >
-      <table 
-        className="display-table" 
-        style={{ 
-          color: currentTheme.color,
-          backgroundColor: 'transparent'
-        }}
-      >
-        <tbody>
-          <tr>
-            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.first}</th>
-            <td style={{color: currentTheme.color}}>{gameData.turnResults.first}</td>
-            <td style={{color: currentTheme.color}}>{calcRate(gameData.turnResults.first, gameData.matchResults.total)}%</td>
-            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.win}</th>
-            <td style={{color: currentTheme.color}}>{gameData.matchResults.wins}</td>
-            <td style={{color: currentTheme.color}}>{calcRate(gameData.matchResults.wins, gameData.matchResults.total)}%</td>
-          </tr>
-          <tr>
-            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.second}</th>
-            <td style={{color: currentTheme.color}}>{gameData.turnResults.second}</td>
-            <td style={{color: currentTheme.color}}>{calcRate(gameData.turnResults.second, gameData.matchResults.total)}%</td>
-            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.lose}</th>
-            <td style={{color: currentTheme.color}}>{gameData.matchResults.losses}</td>
-            <td style={{color: currentTheme.color}}>{calcRate(gameData.matchResults.losses, gameData.matchResults.total)}%</td>
-          </tr>
-          <tr>
-            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.games}</th>
-            <td style={{color: currentTheme.color}}>{gameData.matchResults.total}</td>
-            <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.winRate}</th>
-            <td style={{color: currentTheme.color}}>{gameData.matchResults.winRate}%</td>
-          </tr>
-        </tbody>
-      </table>
+      <div style={{ fontSize: '1.1em', color: '#888', marginBottom: 4 }}>Layout: {layout}</div>
+      {layout === 'standard' && (
+        <DisplayStandardLayout
+          dict={dict}
+          gameData={gameData}
+          currentTheme={currentTheme}
+          showBackground={showBackground}
+          calcRate={calcRate}
+        />
+      )}
+      {layout === 'wide' && (
+        <DisplayWideLayout
+          dict={dict}
+          gameData={gameData}
+          currentTheme={currentTheme}
+          showBackground={showBackground}
+          calcRate={calcRate}
+        />
+      )}
+      {layout === 'compact' && (
+        <DisplayCompactLayout
+          dict={dict}
+          gameData={gameData}
+          currentTheme={currentTheme}
+          showBackground={showBackground}
+          calcRate={calcRate}
+        />
+      )}
     </div>
   );
 };
