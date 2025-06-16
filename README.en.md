@@ -35,7 +35,7 @@ Display first/second turns and match results in real time so your audience can i
 ![スクリーンショット 2025-06-17 042848](https://github.com/user-attachments/assets/10de1647-d0e0-4a41-8dbc-4c9dd21c7642)
 
 1. Launch the app
-2. In OBS, add a **Window Capture** source and select "White Bear Panel"
+2. In OBS, add a **Window Capture** source and select "「白熊パネル（ディスプレイ）」"
 3. Adjust the position and size freely in OBS
 
 ### 🎛️ Using the Control Panel
