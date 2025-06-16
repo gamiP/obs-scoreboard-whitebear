@@ -8,8 +8,6 @@ const DisplayStandardLayout = ({ dict, gameData, currentTheme, showBackground, c
       backgroundColor: 'transparent'
     }}
   >
-    <div>
-    </div>
     <tbody>
       <tr>
         <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.first}</th>
@@ -28,10 +26,10 @@ const DisplayStandardLayout = ({ dict, gameData, currentTheme, showBackground, c
         <td style={{color: currentTheme.color}}>{calcRate(gameData.matchResults.losses, gameData.matchResults.total)}%</td>
       </tr>
       <tr>
-        <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.games}</th>
-        <td style={{color: currentTheme.color}}>{gameData.matchResults.total}</td>
-        <th style={{writingMode: 'horizontal-tb', color: currentTheme.color}}>{dict.winRate}</th>
-        <td style={{color: currentTheme.color}}>{gameData.matchResults.winRate}%</td>
+        <th colSpan={2} style={{writingMode: 'horizontal-tb', color: '#e83010', textAlign: 'center'}}>{dict.games}</th>
+        <td colSpan={1} style={{color: currentTheme.color, textAlign: 'center'}}>{gameData.matchResults.total}</td>
+        <th colSpan={2} style={{writingMode: 'horizontal-tb', color: '#e83010', textAlign: 'center'}}>{dict.winRate}</th>
+        <td colSpan={1} style={{color: currentTheme.color, textAlign: 'center'}}>{gameData.matchResults.winRate}%</td>
       </tr>
     </tbody>
   </table>

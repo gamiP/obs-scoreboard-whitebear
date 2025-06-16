@@ -1,11 +1,14 @@
 {
   "control": {
     "title": "操作パネル",
+    "layout": "レイアウト",
     "turnTitle": "先攻後攻",
     "matchTitle": "試合結果",
     "coinTitle": "コイン",
     "first": "先攻",
     "second": "後攻",
+    "firstWin": "先勝",
+    "secondWin": "後勝",
     "win": "勝ち",
     "lose": "負け",
     "games": "試合数",
@@ -21,7 +24,11 @@
     "second": "後攻",
     "win": "勝ち",
     "lose": "負け",
+    "wins": "勝利数",
+    "game": "試合",
     "games": "試合数",
+    "firstRate": "先攻率",
+    "coinHeadsRate": "表率",
     "winRate": "勝率"
   }
 } 

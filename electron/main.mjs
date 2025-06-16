@@ -29,6 +29,7 @@ const createWindows = () => {
     transparent: false,
     alwaysOnTop: true,
     resizable: false,
+    title: '白熊パネル（ディスプレイ）',
     webPreferences: {
       contextIsolation: true,
       preload: join(__dirname, 'preload.js'),
@@ -42,6 +43,7 @@ const createWindows = () => {
     width: 400,
     height: 600,
     resizable: false,
+    title: '白熊パネル',
     webPreferences: {
       contextIsolation: true,
       preload: join(__dirname, 'preload.js'),
@@ -126,6 +128,17 @@ const createWindows = () => {
     }
     if (controlWindow) {
       controlWindow.webContents.send('game-data-updated', gameData);
+    }
+  });
+
+  // レイアウト切り替え時にリサイズ可否を制御
+  ipcMain.on('change-layout', (event, layout) => {
+    if (displayWindow) {
+      if (layout === 'standard') {
+        displayWindow.setResizable(false);
+      } else {
+        displayWindow.setResizable(true);
+      }
     }
   });
 };

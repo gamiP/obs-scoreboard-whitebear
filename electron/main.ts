@@ -93,21 +93,28 @@ function createMenu() {
       label: 'Layout',
       submenu: [
         {
-          label: '標準レイアウト',
+          label: 'standard',
           click: () => {
             mainWindow?.webContents.send('change-layout', 'standard');
             displayWindow?.webContents.send('change-layout', 'standard');
           }
         },
         {
-          label: 'ワイドレイアウト',
+          label: 'long',
+          click: () => {
+            mainWindow?.webContents.send('change-layout', 'long');
+            displayWindow?.webContents.send('change-layout', 'long');
+          }
+        },
+        {
+          label: 'wide',
           click: () => {
             mainWindow?.webContents.send('change-layout', 'wide');
             displayWindow?.webContents.send('change-layout', 'wide');
           }
         },
         {
-          label: 'コンパクトレイアウト',
+          label: 'compact',
           click: () => {
             mainWindow?.webContents.send('change-layout', 'compact');
             displayWindow?.webContents.send('change-layout', 'compact');
@@ -132,7 +139,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true
+      devTools: false
     }
   });
 
@@ -141,7 +148,6 @@ function createWindow() {
   } else {
     mainWindow.loadFile('dist/index.html');
   }
-  mainWindow.webContents.openDevTools();
   
   // ディスプレイウィンドウの生成
   displayWindow = new BrowserWindow({
@@ -151,7 +157,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      devTools: true
+      devTools: false
     }
   });
 
@@ -160,7 +166,6 @@ function createWindow() {
   } else {
     displayWindow.loadFile('dist/index.html', { hash: 'display' });
   }
-  displayWindow.webContents.openDevTools();
 
   // コントロール画面を閉じたらディスプレイ画面も閉じる
   mainWindow.on('closed', () => {

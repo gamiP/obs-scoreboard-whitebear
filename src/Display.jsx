@@ -6,6 +6,7 @@ import './Display.css';
 import DisplayStandardLayout from './components/layouts/DisplayStandardLayout';
 import DisplayWideLayout from './components/layouts/DisplayWideLayout';
 import DisplayCompactLayout from './components/layouts/DisplayCompactLayout';
+import DisplayLongLayout from './components/layouts/DisplayLongLayout';
 
 const initialGameData = {
   turnResults: {
@@ -59,7 +60,12 @@ const DisplayContent = () => {
     // 保存されたデータを復元
     const savedData = localStorage.getItem('gameData');
     if (savedData) {
-      setGameData(JSON.parse(savedData));
+      const parsed = JSON.parse(savedData);
+      // firstWins/secondWinsがなければ0で補完
+      if (!parsed.matchResults) parsed.matchResults = {};
+      if (parsed.matchResults.firstWins === undefined) parsed.matchResults.firstWins = 0;
+      if (parsed.matchResults.secondWins === undefined) parsed.matchResults.secondWins = 0;
+      setGameData(parsed);
     }
 
     return () => {
@@ -73,6 +79,7 @@ const DisplayContent = () => {
   useEffect(() => {
     ipcRenderer.on('change-layout', (_, newLayout) => {
       setLayout(newLayout);
+      ipcRenderer.send('change-layout', newLayout);
     });
     return () => {
       ipcRenderer.removeAllListeners('change-layout');
@@ -112,7 +119,6 @@ const DisplayContent = () => {
         flexDirection: 'column'
       }}
     >
-      <div style={{ fontSize: '1.1em', color: '#888', marginBottom: 4 }}>Layout: {layout}</div>
       {layout === 'standard' && (
         <DisplayStandardLayout
           dict={dict}
@@ -124,6 +130,15 @@ const DisplayContent = () => {
       )}
       {layout === 'wide' && (
         <DisplayWideLayout
+          dict={dict}
+          gameData={gameData}
+          currentTheme={currentTheme}
+          showBackground={showBackground}
+          calcRate={calcRate}
+        />
+      )}
+      {layout === 'long' && (
+        <DisplayLongLayout
           dict={dict}
           gameData={gameData}
           currentTheme={currentTheme}

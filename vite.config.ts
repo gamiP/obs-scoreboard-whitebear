@@ -24,9 +24,7 @@ export default defineConfig({
                 entryFileNames: 'main.js'
               }
             },
-            watch: {
-              include: ['electron/**/*']
-            },
+            // Viteのbuild.watchは本番ビルドでは不要
             minify: true,
             sourcemap: true
           }

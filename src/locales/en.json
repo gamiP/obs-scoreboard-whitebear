@@ -1,11 +1,14 @@
 {
   "control": {
     "title": "Control Panel",
+    "layout": "Layout",
     "turnTitle": "Turn Order",
     "matchTitle": "Match Results",
     "coinTitle": "Coin",
     "first": "First",
     "second": "Second",
+    "firstWin": "First Win",
+    "secondWin": "Second Win",
     "win": "Win",
     "lose": "Lose",
     "games": "Games",
@@ -21,7 +24,11 @@
     "second": "Second",
     "win": "Win",
     "lose": "Lose",
+    "wins": "Wins",
+    "game": "Game",
     "games": "Games",
+    "firstRate": "First Rate",
+    "coinHeadsRate": "Heads Rate",
     "winRate": "Win Rate"
   }
 } 

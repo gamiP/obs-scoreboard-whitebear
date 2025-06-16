@@ -1,21 +1,16 @@
 {
-  "name": "electron-react-app",
+  "name": "WhiteBearPanel",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "electron:build": "npm run build && electron-builder",
+    "build:renderer": "vite build",
+    "build:main": "tsc",
+    "build": "npm run build:main && npm run build:renderer",
+    "dist:win32": "rimraf dist-electron && npm run build && electron-builder --win --ia32",
     "clean": "rimraf dist dist-electron",
-    "predev": "npm run clean",
-    "prebuild": "npm run clean",
-    "setup": "npm install && npm run clean",
-    "rebuild": "npm run setup && npm run electron:build",
-    "rebuild:start": "npm run rebuild && npm run dev",
-    "start": "npm run setup && npm run dev"
+    "predev": "npm run clean"
   },
   "dependencies": {
     "electron-is-dev": "^3.0.1",
@@ -60,14 +55,13 @@
     "win": {
       "target": [
         {
-          "target": "nsis",
+          "target": "portable",
           "arch": [
-            "x64",
             "ia32"
           ]
         }
       ],
-      "icon": "build/icon.ico"
+      "icon": "assets/win/app.ico"
     },
     "linux": {
       "target": [
