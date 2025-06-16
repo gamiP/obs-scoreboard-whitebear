@@ -22,9 +22,13 @@ export default defineConfig({
             rollupOptions: {
               output: {
                 entryFileNames: 'main.js'
-              },
-              external: ['electron']
-            }
+              }
+            },
+            watch: {
+              include: ['electron/**/*']
+            },
+            minify: true,
+            sourcemap: true
           }
         }
       },
@@ -37,8 +41,12 @@ export default defineConfig({
           build: {
             outDir: 'dist-electron/preload',
             rollupOptions: {
-              external: ['electron']
-            }
+              output: {
+                entryFileNames: 'preload.js'
+              }
+            },
+            minify: true,
+            sourcemap: true
           }
         }
       }
@@ -52,10 +60,20 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    strictPort: true
+    strictPort: true,
+    watch: {
+      usePolling: true
+    }
   },
   build: {
     outDir: 'dist',
-    emptyOutDir: true
+    emptyOutDir: true,
+    sourcemap: true,
+    minify: true,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html')
+      }
+    }
   }
 }); 

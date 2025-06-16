@@ -27,11 +27,14 @@ const MAX_DIGIT = 999;
 
 const ControlContent = () => {
   const { dict, changeLang } = useLanguage();
-  const [gameData, setGameData] = useState(initialGameData);
+  const [gameData, setGameData] = useState({ ...initialGameData });
   const [theme, setTheme] = useState('black');
   const [showBackground, setShowBackground] = useState(true);
   const [history, setHistory] = useState([initialGameData]);
-  const [canAddResult, setCanAddResult] = useState(true);
+
+  const totalGames = (gameData.turnResults.first || 0) + (gameData.turnResults.second || 0);
+  const matchInputCount = (gameData.matchResults.wins || 0) + (gameData.matchResults.losses || 0);
+  const matchButtonDisabled = totalGames === 0 || matchInputCount >= totalGames;
 
   useEffect(() => {
     // テーマの変更を監視
@@ -74,23 +77,20 @@ const ControlContent = () => {
   };
 
   const updateTurnResult = (isFirst) => {
-    const newGameData = { ...gameData };
+    const newGameData = JSON.parse(JSON.stringify(gameData));
     if (isFirst) {
       newGameData.turnResults.first = Math.min(newGameData.turnResults.first + 1, MAX_DIGIT);
     } else {
       newGameData.turnResults.second = Math.min(newGameData.turnResults.second + 1, MAX_DIGIT);
     }
     setGameData(newGameData);
-    setHistory([...history, newGameData]);
+    setHistory([...history, JSON.parse(JSON.stringify(newGameData))]);
     localStorage.setItem(GAME_DATA_KEY, JSON.stringify(newGameData));
     ipcRenderer.send('update-game-data', newGameData);
-    setCanAddResult(true);
   };
 
   const updateMatchResult = (isWin) => {
-    if (!canAddResult) return;
-
-    const newGameData = { ...gameData };
+    const newGameData = JSON.parse(JSON.stringify(gameData));
     if (isWin) {
       newGameData.matchResults.wins = Math.min(newGameData.matchResults.wins + 1, MAX_DIGIT);
     } else {
@@ -100,21 +100,20 @@ const ControlContent = () => {
     newGameData.matchResults.winRate = Math.round((newGameData.matchResults.wins / newGameData.matchResults.total) * 100);
 
     setGameData(newGameData);
-    setHistory([...history, newGameData]);
+    setHistory([...history, JSON.parse(JSON.stringify(newGameData))]);
     localStorage.setItem(GAME_DATA_KEY, JSON.stringify(newGameData));
     ipcRenderer.send('update-game-data', newGameData);
-    setCanAddResult(false);
   };
 
   const updateCoinResult = (isHeads) => {
-    const newGameData = { ...gameData };
+    const newGameData = JSON.parse(JSON.stringify(gameData));
     if (isHeads) {
       newGameData.coinResults.heads = Math.min((newGameData.coinResults.heads || 0) + 1, MAX_DIGIT);
     } else {
       newGameData.coinResults.tails = Math.min((newGameData.coinResults.tails || 0) + 1, MAX_DIGIT);
     }
     setGameData(newGameData);
-    setHistory([...history, newGameData]);
+    setHistory([...history, JSON.parse(JSON.stringify(newGameData))]);
     localStorage.setItem(GAME_DATA_KEY, JSON.stringify(newGameData));
     ipcRenderer.send('update-game-data', newGameData);
   };
@@ -127,15 +126,14 @@ const ControlContent = () => {
     setHistory(newHistory);
     localStorage.setItem(GAME_DATA_KEY, JSON.stringify(previousState));
     ipcRenderer.send('update-game-data', previousState);
-    setCanAddResult(true);
   };
 
   const resetData = () => {
-    setGameData(initialGameData);
-    setHistory([initialGameData]);
-    localStorage.setItem(GAME_DATA_KEY, JSON.stringify(initialGameData));
-    ipcRenderer.send('update-game-data', initialGameData);
-    setCanAddResult(true);
+    const resetObj = JSON.parse(JSON.stringify(initialGameData));
+    setGameData(resetObj);
+    setHistory([...history, JSON.parse(JSON.stringify(resetObj))]);
+    localStorage.setItem(GAME_DATA_KEY, JSON.stringify(resetObj));
+    ipcRenderer.send('update-game-data', resetObj);
   };
 
   return (
@@ -157,7 +155,7 @@ const ControlContent = () => {
         </div>
 
         <div className="control-section">
-          <h3>コイン</h3>
+          <h3>{dict.coinTitle}</h3>
           <div className="button-group">
             <button onClick={() => updateCoinResult(true)}>{dict.coinHeads}</button>
             <button onClick={() => updateCoinResult(false)}>{dict.coinTails}</button>
@@ -183,8 +181,18 @@ const ControlContent = () => {
         <div className="control-section">
           <h3>{dict.matchTitle}</h3>
           <div className="button-group">
-            <button onClick={() => updateMatchResult(true)} disabled={!canAddResult}>{dict.win}</button>
-            <button onClick={() => updateMatchResult(false)} disabled={!canAddResult}>{dict.lose}</button>
+            <button
+              onClick={() => updateMatchResult(true)}
+              disabled={matchButtonDisabled}
+            >
+              {dict.win}
+            </button>
+            <button
+              onClick={() => updateMatchResult(false)}
+              disabled={matchButtonDisabled}
+            >
+              {dict.lose}
+            </button>
           </div>
           <div className="stats-container">
             <div className="stats stats-group">

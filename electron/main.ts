@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, Menu, dialog } from 'electron';
 const path = require('path');
+import isDev from 'electron-is-dev';
 
 process.env.DIST = path.join(__dirname, '../dist');
 process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public');
@@ -93,15 +94,15 @@ function createMenu() {
   Menu.setApplicationMenu(menu);
 }
 
-// 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
-const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL'];
-
 function createWindow() {
+  if (mainWindow !== null) {
+    return; // すでにウィンドウがある場合は何もしない
+  }
   // コントロール画面の生成
   // width: 400, height: 800
   mainWindow = new BrowserWindow({
     width: 400,
-    height: 800,
+    height: 700,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -109,15 +110,14 @@ function createWindow() {
     }
   });
 
-  if (VITE_DEV_SERVER_URL) {
-    mainWindow.loadURL(VITE_DEV_SERVER_URL);
+  if (isDev) {
+    mainWindow.loadURL('http://localhost:5173');
   } else {
     mainWindow.loadFile('dist/index.html');
   }
   mainWindow.webContents.openDevTools();
   
   // ディスプレイウィンドウの生成
-  // width: 700, height: 400
   displayWindow = new BrowserWindow({
     width: 700,
     height: 300,
@@ -129,8 +129,8 @@ function createWindow() {
     }
   });
 
-  if (VITE_DEV_SERVER_URL) {
-    displayWindow.loadURL(`${VITE_DEV_SERVER_URL}#/display`);
+  if (isDev) {
+    displayWindow.loadURL('http://localhost:5173#/display');
   } else {
     displayWindow.loadFile('dist/index.html', { hash: 'display' });
   }

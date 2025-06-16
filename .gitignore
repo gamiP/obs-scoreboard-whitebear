@@ -12,6 +12,7 @@ node_modules/
 *.local
 dist/
 dist_electron/
+dist-electron/
 *.exe
 *.dmg
 *.AppImage
